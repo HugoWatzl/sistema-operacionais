@@ -1,0 +1,11 @@
+24/2/25 -- aula 3
+
+LINUX : Comandos básicos
+
+
+.PWD - mostra diretório atual
+.LS - lista o conteúdo do diretório
+.CD - altera o diretório
+.MKDIR - cria um diretório
+.FILE - verifica o tipo de arquivo
+.TOUCH - altera a hora de uma arquivo
