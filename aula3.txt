@@ -9,3 +9,11 @@ LINUX : Comandos básicos
 .MKDIR - cria um diretório
 .FILE - verifica o tipo de arquivo
 .TOUCH - altera a hora de uma arquivo
+.STAT - mostra o i-node do arquivo
+.CP - faz copias dos arquivos
+.MV - mover(apagar e copiar em outro diretório/ diferente de CP que copia) e renomear arquivos
+.LN - cria links
+
+I-NODE --> uma estrutura de dados usado no sistema de arquivos armazenando informações sobre os arquivos
+
+METACARACTERES --> caracteres com funções especiais
