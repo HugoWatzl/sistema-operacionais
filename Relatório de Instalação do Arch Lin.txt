@@ -1,0 +1,160 @@
+Relatório de Instalação do Arch Linux em Máquina Virtual (VirtualBox)
+Introdução
+O objetivo deste relatório é documentar o processo de instalação do Arch Linux em uma máquina virtual utilizando o VirtualBox. O Arch Linux é uma distribuição minimalista e flexível, voltada para usuários avançados que desejam controlar cada aspecto do sistema. A instalação do Arch Linux não é tão simples quanto a de outras distribuições, exigindo que o usuário configure o sistema manualmente, o que o torna ideal para aprendizado e personalização.
+
+Objetivo do Relatório:
+Documentar o processo de instalação do Arch Linux em uma máquina virtual no VirtualBox.
+Descrever as principais etapas do processo, incluindo particionamento do disco, instalação do sistema base, e configuração de boot.
+Relatar qualquer modificação ou ajuste feito durante a instalação.
+Passos para Instalação
+1. Preparação do Ambiente
+Antes de iniciar a instalação, foi necessário preparar o ambiente da máquina virtual:
+
+Instalação do VirtualBox:
+
+O VirtualBox foi instalado a partir do site oficial.
+Baixar a ISO do Arch Linux:
+
+A ISO mais recente do Arch Linux foi baixada do site oficial do Arch.
+2. Criação da Máquina Virtual no VirtualBox
+Criação da máquina virtual:
+
+O VirtualBox foi aberto e uma nova máquina virtual foi criada com as seguintes configurações:
+Nome: Arch Linux VM
+Tipo: Linux
+Versão: Linux 2.6/3.x/4.x (64-bit)
+Memória: 1 GB de RAM
+Disco Rígido: 20 GB (disco dinâmico)
+Configuração da ISO:
+
+A ISO do Arch Linux foi associada à máquina virtual, permitindo que a instalação fosse realizada a partir dela.
+3. Início da Instalação
+Inicialização a partir da ISO:
+
+A máquina virtual foi iniciada e a instalação do Arch Linux começou. O terminal do Arch Linux foi carregado após a inicialização.
+Conexão com a internet:
+
+A conexão com a internet foi estabelecida automaticamente através de rede cabeada. Para configurações manuais, o comando iwctl teria sido usado para configurar redes sem fio.
+4. Particionamento do Disco
+O próximo passo foi o particionamento do disco rígido virtual:
+
+Listar os dispositivos de disco:
+
+O comando lsblk foi usado para listar as partições e discos disponíveis no sistema.
+Particionamento usando fdisk:
+
+O comando fdisk /dev/sda foi utilizado para particionar o disco. Criou-se uma partição para o sistema e, opcionalmente, uma partição swap.
+Formatação das partições:
+
+A partição do sistema foi formatada com o sistema de arquivos ext4:
+bash
+Copiar
+mkfs.ext4 /dev/sda1
+A partição swap foi configurada (caso fosse criada):
+bash
+Copiar
+mkswap /dev/sda2
+swapon /dev/sda2
+Montagem da partição:
+
+A partição do sistema foi montada:
+bash
+Copiar
+mount /dev/sda1 /mnt
+5. Instalação do Sistema Base
+Com a partição montada, o próximo passo foi instalar o sistema básico do Arch Linux:
+
+Comando pacstrap:
+
+O comando pacstrap foi utilizado para instalar o sistema base:
+bash
+Copiar
+pacstrap /mnt base linux linux-firmware
+Geração do fstab:
+
+O comando genfstab foi utilizado para gerar o arquivo fstab, que configura a montagem das partições:
+bash
+Copiar
+genfstab -U /mnt >> /mnt/etc/fstab
+6. Configuração do Sistema
+Após a instalação do sistema base, o próximo passo foi configurar o sistema:
+
+Entrar no sistema recém-instalado:
+
+O comando arch-chroot foi utilizado para entrar no novo sistema instalado:
+bash
+Copiar
+arch-chroot /mnt
+Configuração de fuso horário:
+
+O fuso horário foi configurado para o Brasil:
+bash
+Copiar
+ln -sf /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime
+hwclock --systohc
+Configuração do idioma:
+
+O idioma foi configurado para o português brasileiro:
+bash
+Copiar
+echo "pt_BR.UTF-8 UTF-8" >> /etc/locale.gen
+locale-gen
+Configuração do nome do host:
+
+O nome do host foi definido:
+bash
+Copiar
+echo "arch-vm" > /etc/hostname
+7. Instalação e Configuração do Bootloader
+Para permitir que o Arch Linux seja iniciado corretamente, o GRUB foi instalado como carregador de inicialização:
+
+Instalar o GRUB:
+
+O comando pacman foi utilizado para instalar o GRUB:
+bash
+Copiar
+pacman -S grub
+Instalar o GRUB no disco:
+
+O comando grub-install foi utilizado para instalar o GRUB:
+bash
+Copiar
+grub-install --target=i386-pc /dev/sda
+Configurar o GRUB:
+
+O comando grub-mkconfig foi utilizado para gerar o arquivo de configuração do GRUB:
+bash
+Copiar
+grub-mkconfig -o /boot/grub/grub.cfg
+8. Finalização da Instalação
+Após a instalação do GRUB, o processo foi concluído:
+
+Saída do chroot:
+
+O comando exit foi utilizado para sair do ambiente chroot.
+Desmontagem das partições:
+
+As partições foram desmontadas com o comando:
+bash
+Copiar
+umount -R /mnt
+Reinicialização do sistema:
+
+O sistema foi reiniciado:
+bash
+Copiar
+reboot
+Modificações Realizadas
+Durante o processo de instalação, algumas modificações foram feitas no sistema:
+
+Personalização do idioma: Foi configurado o idioma para português brasileiro.
+Definição do fuso horário: O fuso horário foi ajustado para a região de São Paulo.
+Instalação do GRUB: O GRUB foi instalado e configurado para permitir o boot do sistema.
+Conclusão
+A instalação do Arch Linux na máquina virtual foi bem-sucedida, embora tenha exigido um conhecimento prévio dos comandos e configurações do sistema. O processo de instalação manual permite uma grande flexibilidade e personalização do sistema, o que é uma das principais vantagens do Arch Linux.
+
+O VirtualBox foi uma ótima ferramenta para criar um ambiente controlado, onde foi possível realizar a instalação sem afetar o sistema físico. A instalação do Arch Linux, embora mais complexa, proporciona um aprendizado profundo sobre como o Linux funciona e como ele pode ser configurado do zero.
+
+Referências
+Arch Wiki
+Instalação do Arch Linux
