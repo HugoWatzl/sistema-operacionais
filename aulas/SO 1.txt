@@ -1,0 +1,22 @@
+sistema operacional 10\2\25
+aula 1
+
+sistema operacional - SO(e um software)
+
+ ------KERNEL - nucleio do SO
+|             - gerenciador do SO
+|     
+|------> exemplos como o Linux 
+
+shell: interfase de uso do SO 
+
+- gui {interfase gráfica do utilizador (explore(mx),outros)
+- cld {interfase linha de comandos (bash , powershwll, outros) 
+
+
+distribuição de SO: é a união de um kenel de um shell, a seleção de um conjunto de aplicativos e a particularidade de um arquivo de configuração.
+
+virtualização: técnica através do    , hardware é compartilhado em 'ambientes' isolados.
+
+sob o aspecto do HARDWARE existe um único SO controlando.
+sob o aspecto de REDES existem múltiplas SO , isso ocorre porque a rede detecta o numero do ip(identificador).
