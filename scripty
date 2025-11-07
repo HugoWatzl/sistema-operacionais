@@ -1,0 +1,246 @@
+#!/bin/bash
+
+# criar diretorio
+criar_dir(){
+echo " "
+echo " "
+echo " ---Criar Diretório--- "
+echo " "
+echo -n "Digite o nome do diretório a ser criado : "
+read dirx
+mkdir "$dirx"
+echo " "
+echo " "$dirx" criado com sucesso, deseja move-lo para dentro de algum repositório existente ? "
+echo " "
+echo "1) SIM"
+echo "2) NÃO"
+echo " "
+read tip
+echo " "
+case "$tip" in
+	1)echo "Digite o nome do diretório pai (Existente) : "
+	  read pai
+	  mv "$dirx" "$pai"
+	  echo " "$dirx" Movido para "$pai" com sucesso! "
+	  ;;
+
+	2)return ;;
+esac
+}
+
+# listar diretorios
+list_dir(){
+echo " "
+echo " "
+echo " ---Listar Diretório--- "
+echo " "
+echo "1)Listar Diretórios"
+echo "2)Listar Arquivos"
+echo "3)Ambos"
+echo " "
+echo -n " "
+read item
+echo " "
+echo -n "Digite o nome de um ditório para ser listado(Enter para o atual) : "
+read diry
+#garante melhor q o if para enter = .
+diry="${diry:-.}"
+echo " "
+echo " "
+echo " ---- Selecione uma Tipo ----"
+echo " "
+echo "1)Lista Simples (ls)"
+echo "2)Tree (árvore)"
+echo "3)Lista Detalhada(ls -L)"
+echo "4)Lista Recursiva(ls -R)"
+echo " "
+echo "Opções de 1-4 : "
+read lista
+echo " "
+case "$lista" in
+	1)cmd="ls" ;;
+	2)cmd="tree" ;;
+	3)cmd="ls -l" ;;
+	4)cmd="ls -R" ;;
+	*) echo "Opção invalida"
+esac
+echo " "
+case "$item" in
+	1)echo "Listando diretórios "
+	  echo " "
+	  case "$scmd" in
+		ls) find "$diry" -maxdepth 1 -type d ;;
+		"ls -l") find "$diry" -maxdepth 1 -type d -exec ls -ld {} \; ;;
+		"ls -R") find "$diry" -type d | grep -v "/$" ;;
+		tree) $cmd "$diry" | grep -v "/$" ;;
+	  esac
+	  ;;
+	2)echo "Listando apenas arquivos em "$diry""
+	  echo " "
+	  case "$scmd" in
+		ls) find "$diry" -maxdepth 1 -type f ;;
+		"ls -l") find "$diry" -maxdepth 1 -type f -exec ls -l {} \; ;;
+		"ls -R") $cmd "$diry" | grep -v ":$" ;;
+		tree) $cmd "$diry" grep -v "/$" ;;
+	  esac
+	  ;;
+	3)echo "Listando tudo!"
+	  echo ""
+	  $cmd "$diry"
+	  return
+	  ;;
+	*)echo "Opição inválida(1-4)" ;
+	  return
+	  ;;
+esac
+}
+
+# cria um arquivo
+criar_arq(){
+echo " "
+echo " "
+echo " ---Cria um novo Arquivo---"
+echo " "
+echo -n "Digite um nome para o arquivo a ser criado : "
+read arqx
+touch "$arqx"
+echo " "
+echo "Arquivo $arqx criado com sucesso!!"
+echo " "
+echo -n "Deseja inserir dados no arquivo ?"
+echo " "
+echo "1)SIM"
+echo "2)NÃO"
+echo " "
+read resp
+case "$resp" in
+	1)echo "Digite (Cntrl + D para salvar e sair):"
+	  cat > "$arqx"
+	  echo " "
+	  echo "Dados armazenados no arquivo com sucesso!"
+	  echo ""
+	  ;;
+	2)return ;;
+esac
+}
+
+# adiciona conteudo ao arquivo
+# inserir dados no arquivo
+busca(){
+echo " "
+echo " "
+echo " ---Buscar arquivo---"
+echo " "
+echo "1)Buscar por nome"
+echo "2)Buscar por palavras chaves (dentro do arquivo)"
+echo -n " "
+read op
+
+case "$op" in
+1)""
+  echo -n "Digite o nome do arquivo : "
+  read nome
+  if [ -z "$nome" ]; then
+	echo "ERRO! Digite um arquivo!"
+	return
+  fi
+
+  arquivo=$(find . -type f -iname "*$nome*")
+  qnt=$(echo "$arquivo" | wc -l)
+
+  if [ "$qnt" -eq 0 ]; then
+	echo "Nenhumm arquivo encontrado"
+	return
+  fi
+  
+  if [ "$qnt" -le 1 ]; then
+	echo " "
+	echo "arquivo encontrado : $arquivo"
+	
+  else
+	echo "Existem "$qnt" arquivos "
+	echo " "
+	echo "$arquivo"
+	echo " "
+  fi
+  echo -n "Digite o arquivo que deseja abrir : "
+  read aq
+  if [ -f "$aq" ]; then
+	echo "Conteúdo de :"$aq""
+	echo " "
+	cat "$aq"
+	echo " "
+  
+  else
+	echo "Arquivo não encontrado"
+
+  fi
+  ;;
+
+2) echo ""
+   echo -n "Digite uma palavra chave ou frase para a busca : "
+   read chave
+   if [ -z "$chave" ]; then
+	 echo "ERRO!! A busca não pode ser vazia!"
+	 return
+   fi
+# R recursiva, i ignora maiuscula e minuscula, l mostra o nome do arq
+# 2>/dev/null tira mensagens de erros
+   arquivo=$(grep -rli "$chave" * 2>/dev/null)
+   qnt=$(echo "$arquivo" | wc -l)
+
+   if [ "$qnt" -eq 0 ]; then
+	 return
+   fi
+
+# (O código para a opção 2) está incompleto nas imagens)
+
+esac
+}
+
+
+echo "#####################################################################################"
+echo "#                                                                                   #"
+echo "# IBMEC                                                                             #"
+echo "# Sistemas Operacionais                     Semestre 2 de 2025                      #"
+echo "# Código:IBM8940                              Turma:8001                            #"
+echo "# -                                                                                 #"
+echo "# Equipe de Desenvolvedores                                                         #"
+echo "# Aluno: Hugo Watzl                                                                 #"
+echo "# Aluno: Eduardo Jacob                                                              #"
+echo "# Aluno: Lucca Barcelos                                                             #"
+echo "#                                                                                   #"
+echo "# Rio de Janeiro, `date '+%d'` do `date '+%m'` de `date '+%y'`                      #"
+echo "#                                                                                   #"
+echo "#                                                                                    #"
+echo "# Hora do Sitema : `date '+%H'` Horas e `date '+%M'` Minutos"                       #"
+echo "#                                                                                   #"    
+echo "#####################################################################################"
+
+
+while true; do
+echo ""
+echo ""
+echo " --- MENU --- "
+echo ""
+echo ""
+echo "1) Criar Diretório "
+echo "2) Listar "
+echo "3) Criar arquivo "
+echo "4) Buscar arquivo"
+echo "5) Finalizar programa"
+echo " "
+echo -n "Digite uma opição(1-5) : "
+read op
+
+case "$op" in
+	1) criar_dir ;;
+	2) list_dir ;;
+	3) criar_arq ;;
+	4) busca ;;
+	5) echo " "
+	   echo "Programa encerrado.."
+	   break ;;
+	*) echo "Selecione um número valido (entre 1-5)!!" ;;
+esac
+done
