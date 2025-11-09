@@ -81,7 +81,7 @@ case "$item" in
 		ls) find "$diry" -maxdepth 1 -type f ;;
 		"ls -l") find "$diry" -maxdepth 1 -type f -exec ls -l {} \; ;;
 		"ls -R") $cmd "$diry" | grep -v ":$" ;;
-		tree) $cmd "$diry" grep -v "/$" ;;
+		tree) $cmd "$diry" | grep -v "/$" ;;
 	  esac
 	  ;;
 	3)echo "Listando tudo!"
@@ -216,16 +216,15 @@ if [ "$sn" = "s" ]; then
 			echo "Arquivo não encontrado"
 		fi
 	fi
-fi # <--- FALTAVA FECHAR O 'if [ "$sn" = "s" ]'
+fi '
    
-   ;; # <--- FALTAVA FECHAR A OPÇÃO 2 DO CASE
-# --- Fim da lógica da imagem ---
-
-*) # <--- Adicionado um caso padrão
-   echo "Opção de busca inválida."
    ;;
 
-esac # <--- FALTAVA FECHAR O 'case "$op" in'
+
+*) echo "Opção de busca inválida."
+   ;;
+
+esac 
 }
 
 
@@ -242,7 +241,7 @@ echo "# Aluno: Lucca Barcelos                                                   
 echo "#                                                                                   #"
 echo "# Rio de Janeiro, `date '+%d'` do `date '+%m'` de `date '+%y'`                      #"
 echo "#                                                                                   #"
-echo "#                                                                                    #"
+echo "#                                                                                   #"
 echo "# Hora do Sitema : `date '+%H'` Horas e `date '+%M'` Minutos"                       #"
 echo "#                                                                                   #"    
 echo "#####################################################################################"
