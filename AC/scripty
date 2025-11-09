@@ -68,7 +68,7 @@ echo " "
 case "$item" in
 	1)echo "Listando diretórios "
 	  echo " "
-	  case "$scmd" in
+	  case "$cmd" in
 		ls) find "$diry" -maxdepth 1 -type d ;;
 		"ls -l") find "$diry" -maxdepth 1 -type d -exec ls -ld {} \; ;;
 		"ls -R") find "$diry" -type d | grep -v "/$" ;;
@@ -77,7 +77,7 @@ case "$item" in
 	  ;;
 	2)echo "Listando apenas arquivos em "$diry""
 	  echo " "
-	  case "$scmd" in
+	  case "$cmd" in
 		ls) find "$diry" -maxdepth 1 -type f ;;
 		"ls -l") find "$diry" -maxdepth 1 -type f -exec ls -l {} \; ;;
 		"ls -R") $cmd "$diry" | grep -v ":$" ;;
@@ -199,34 +199,33 @@ echo " "
 echo "Deseja ver o conteudo dentro do arquivo (Digite s/n)?"
 read sn
 if [ "$sn" = "s" ]; then
-    if [ "$qnt" -le 1 ]; then
-        echo " "
-        cat "$arquivo"
-        echo " "
+	if [ "$qnt" -le 1 ]; then
+		echo " "
+		cat "$arquivo"
+		echo " "
 
-    else
-        echo -n "Digite o arquivo que deseja abrir : "
-        read aq
-        if [ -f "$aq" ]; then
-            echo " "
-            cat "$aq"
-            echo " "
+	else
+		echo -n "Digite o arquivo que deseja abrir : "
+		read aq
+		if [ -f "$aq" ]; then
+			echo " "
+			cat "$aq"
+			echo " "
 
-        else
-            echo "Arquivo não encontrado"
-        fi
-    fi
+		else
+			echo "Arquivo não encontrado"
+		fi
+	fi
+fi # <--- FALTAVA FECHAR O 'if [ "$sn" = "s" ]'
+   
+   ;; # <--- FALTAVA FECHAR A OPÇÃO 2 DO CASE
+# --- Fim da lógica da imagem ---
 
-    return
-    ;;
+*) # <--- Adicionado um caso padrão
+   echo "Opção de busca inválida."
+   ;;
 
-2)return ;;
-
-*) echo "Opção invalida" ;;
-
-esac
-
-esac
+esac # <--- FALTAVA FECHAR O 'case "$op" in'
 }
 
 
