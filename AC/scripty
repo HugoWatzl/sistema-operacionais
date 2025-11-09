@@ -193,7 +193,38 @@ case "$op" in
 	 return
    fi
 
-# (O código para a opção 2) está incompleto nas imagens)
+echo "Foram encontrados "$qnt" arquivos : "
+echo "$arquivo"
+echo " "
+echo "Deseja ver o conteudo dentro do arquivo (Digite s/n)?"
+read sn
+if [ "$sn" = "s" ]; then
+    if [ "$qnt" -le 1 ]; then
+        echo " "
+        cat "$arquivo"
+        echo " "
+
+    else
+        echo -n "Digite o arquivo que deseja abrir : "
+        read aq
+        if [ -f "$aq" ]; then
+            echo " "
+            cat "$aq"
+            echo " "
+
+        else
+            echo "Arquivo não encontrado"
+        fi
+    fi
+
+    return
+    ;;
+
+2)return ;;
+
+*) echo "Opção invalida" ;;
+
+esac
 
 esac
 }
